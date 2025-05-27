@@ -1,32 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import axios from 'axios';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post('https://edenhub.io/api/auth/login', {
-                email,
-                password,
-            });
-
-            if (response.status === 200) {
-                Alert.alert('Login Successful');
-                navigation.replace('Home'); // Navigate to Home and reset stack
-            } else {
-                Alert.alert('Login Failed', response.data?.message || 'Unknown error');
-            }
-        } catch (error) {
-            Alert.alert('Login Error', error.message);
+    const handleMockLogin = () => {
+        if (email.trim() === '' || password.trim() === '') {
+            Alert.alert('Missing Info', 'Please enter both email and password.');
+            return;
         }
+
+        // Simulate successful login
+        Alert.alert('Login Successful (Mock)', `Welcome, ${email}!`);
+        navigation.replace('Home');
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Login</Text>
+            <Text style={styles.heading}>Login (Mock Mode)</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -42,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={setPassword}
                 value={password}
             />
-            <Button title="Login" onPress={handleLogin} />
+            <Button title="Login" onPress={handleMockLogin} />
 
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
                 <Text style={styles.linkText}>Don't have an account? Sign up</Text>
